@@ -1,5 +1,9 @@
+// ignore_for_file: deprecated_member_use_from_same_package
+
 import 'dart:io';
 import 'dart:math';
+import 'package:dio/dio.dart';
+import 'package:dio/io.dart';
 import 'package:path/path.dart' as p;
 import 'package:dart_i2p/src/certgen/gen_certs.g.dart' as crts;
 
@@ -15,9 +19,26 @@ class I2p {
     required this.i2pdConf,
     required this.binPath,
     this.tunnels = const [],
+
+    /// enables i2pdConf.httpproxy.enabled and provides non-null this.dio
+    bool addHttpProxy = false,
     this.populateCertsDirectory = true,
+    this.libSoHack = false,
   }) {
+    if (addHttpProxy) {
+      i2pdConf.httpproxy.enabled = true;
+      final adapter = IOHttpClientAdapter()
+        ..createHttpClient = () {
+          final client = HttpClient();
+          client.findProxy = (uri) {
+            return 'PROXY localhost:${i2pdConf.httpproxy.port}';
+          };
+          return client;
+        };
+      _dio = Dio()..httpClientAdapter = adapter;
+    }
     storePath = Directory(storePathString)..createSync(recursive: true);
+
     config = I2pRuntimeConfig(
       conf: _i2pdConf.path,
       tunconf: _tunnelsConf.path,
@@ -29,6 +50,15 @@ class I2p {
     i2pdConf.tunnelsdir = "${_tunnelsConf.path}.d";
     i2pdConf.certsdir = p.join(storePathString, 'certificates');
   }
+
+  /// use lib<executable>.so name instead of <executable> to run binaries.
+  bool libSoHack = false;
+
+  Dio? _dio;
+
+  /// Dio() configured to be used with i2p network, you must set addHttpProxy
+  /// to true when creating I2p object to have Dio set.
+  Dio? get dio => _dio;
 
   /// Enable to put contrib/certificates into the filesystem
   /// this is required for the i2pd to function properly, it is recommended
@@ -84,13 +114,17 @@ class I2p {
           ..writeAsStringSync(content);
       });
     }
-
-    final ps = await Process.start(
-      p.join(binPath, "i2pd"),
+    final bin = p.join(binPath, libSoHack ? 'libi2pd.so' : "i2pd");
+    final ps = await Process.run(
+      bin,
       config.toString().split(' '),
     );
-    stdout.addStream(ps.stdout);
-    stderr.addStream(ps.stderr);
+
+    print("bin: $bin $config");
+    print(ps.stdout);
+    print(ps.stderr);
+    //stdout.addStream(ps.stdout);
+    //stderr.addStream(ps.stderr);
     return ps.exitCode;
   }
 
@@ -104,7 +138,7 @@ class I2p {
 
   Future<String?> domainInfo(String keyfilename) async {
     final run = await Process.run(
-      p.join(binPath, "keyinfo"),
+      p.join(binPath, libSoHack ? 'libkeyinfo.so' : "keyinfo"),
       [
         p.join(
           _i2pdData.path,
@@ -113,9 +147,7 @@ class I2p {
         )
       ],
     );
-    print("stdout: ${run.stdout}");
-    print("stderr: ${run.stderr}");
-    return null;
+    return run.stdout.toString().split("\n")[0];
   }
 }
 
@@ -286,7 +318,7 @@ class I2pRuntimeConfig {
 /// See https://i2pd.readthedocs.io/en/latest/user-guide/configuration/
 /// for more options you can use in this file.
 class I2pdConf {
-  static getPort() => Random().nextInt(30777 - 9111) + 9111;
+  static int getPort() => Random().nextInt(30777 - 9111) + 9111;
 
   I2pdConf({
     this.tunconf = "~/.i2pd/tunnels.conf",
@@ -1192,23 +1224,16 @@ abstract class I2pdTunnel {
   /// Tunnel name - purerly for your information.
   String name;
   static int tunnelSignatureTypeID(TunnelSignatureType type) => switch (type) {
-        // ignore: deprecated_member_use_from_same_package
         TunnelSignatureType.dsaSha1 => 0,
         TunnelSignatureType.ecdsaP256 => 1,
         TunnelSignatureType.ecdsaP384 => 2,
         TunnelSignatureType.ecdsaP521 => 3,
-        // ignore: deprecated_member_use_from_same_package
         TunnelSignatureType.rsa2048sha256 => 4,
-        // ignore: deprecated_member_use_from_same_package
         TunnelSignatureType.rsa3072sha384 => 5,
-        // ignore: deprecated_member_use_from_same_package
         TunnelSignatureType.rsa4096sha512 => 6,
         TunnelSignatureType.ed25519sha512 || TunnelSignatureType.auto => 7,
-        // ignore: deprecated_member_use_from_same_package
         TunnelSignatureType.ed25519phSha512 => 8,
-        // ignore: deprecated_member_use_from_same_package
         TunnelSignatureType.gostr3410aGostr3411_256 => 9,
-        // ignore: deprecated_member_use_from_same_package
         TunnelSignatureType.gostr3410Tc26aGostr3411_512 => 10,
         TunnelSignatureType.red25519Sha512 => 11,
       };

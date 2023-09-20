@@ -41,7 +41,8 @@ Future<void> main() async {
       cpuext: I2pdCpuextConf(),
     ),
   );
-  await i2p.domainInfo('testhttp');
-  final ec = await i2p.run();
-  print('exitc code: $ec');
+  final di = await i2p.domainInfo('testhttpkeys.dat');
+  print("di = '$di'");
+  // final ec = await i2p.run();
+  // print('exitc code: $ec');
 }
