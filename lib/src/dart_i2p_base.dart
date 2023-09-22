@@ -90,6 +90,23 @@ class I2p {
   /// To ensure full compatibility with
   String binPath;
   Future<int> run() async {
+    if (i2pdConf.pidfile != null) {
+      try {
+        final pid = int.tryParse(File(i2pdConf.pidfile!).readAsStringSync());
+        if (pid == null) print("pid is NaN - $pid");
+        // i hoped to use this one...
+        // if (Process.killPid(pid!, 0)) {}
+
+        final checkProc =
+            await Process.run('kill', ['-s', '0', pid.toString()]);
+        if (checkProc.exitCode == 0) {
+          // it looks like i2pd is already running, we are not going to start it again
+          return -256;
+        }
+      } catch (e) {
+        // fail silently, we don't care that much.
+      }
+    }
     await _i2pdConf.writeAsString(i2pdConf.toString());
     final tunnelsSink = _tunnelsConf.openWrite(mode: FileMode.write);
     for (var tunnel in tunnels) {
@@ -119,12 +136,11 @@ class I2p {
       bin,
       config.toString().split(' '),
     );
-
+    print(ps.pid);
+    print(ps.toString());
     print("bin: $bin $config");
-    print(ps.stdout);
-    print(ps.stderr);
-    //stdout.addStream(ps.stdout);
-    //stderr.addStream(ps.stderr);
+    print('stdout:${ps.stdout}');
+    print('stderr:${ps.stderr}');
     return ps.exitCode;
   }
 
@@ -147,6 +163,10 @@ class I2p {
         )
       ],
     );
+    print("domainInfo:${run.stderr}");
+    print("domainInfo:${run.stdout}");
+    print("domainInfo:${run.exitCode}");
+    if (run.exitCode != 0) return null;
     return run.stdout.toString().split("\n")[0];
   }
 }

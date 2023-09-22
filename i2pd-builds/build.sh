@@ -18,10 +18,10 @@ cd $(dirname $0)
 
 if [[ -d "out" ]];
 then
-    $DOCKER_PREFIX rm -rf out
+    $DOCKER_PREFIX rm -rf out/* || true
 fi
 
-mkdir out
+mkdir out || true
 cd out
 OUTDIR=$(pwd)
 cd ..
@@ -39,7 +39,5 @@ $DOCKER_PREFIX docker run --platform linux/amd64 -v $OUTDIR:/out -v $BPATH/build
 
 # $DOCKER_PREFIX docker run --platform linux/amd64 -v $OUTDIR:/out -v $BPATH/postprocess.sh:/bin/build.sh -w /build --rm -it $BUILD_IMAGE bash /bin/build.sh
 
-mkdir -p $OUTDIR/.plain
-cp -r $OUTDIR/* $OUTDIR/.plain
 cd $OUTDIR
-$DOCKER_PREFIX upx --best $(find . -type f)
+find * -type f | parallel -v '$DOCKER_PREFIX upx --best {}'
