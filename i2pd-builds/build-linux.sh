@@ -15,7 +15,7 @@ set -xe
 apt update
 apt install -y cmake binutils build-essential debhelper libboost-date-time-dev libboost-filesystem-dev libboost-program-options-dev libboost-system-dev libssl-dev zlib1g-dev libminiupnpc-dev git
 
-git clone --recursive https://github.com/PurpleI2P/i2pd.git i2pd-src
+git clone --recursive https://github.com/PurpleI2P/i2pd.git i2pd-src -b 2.49.0
 mkdir -p i2pd-src/build/build-linux-$ARCH
 cd i2pd-src/build/build-linux-$ARCH
 cmake .. -DWITH_STATIC=ON
