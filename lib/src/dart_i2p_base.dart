@@ -1,7 +1,9 @@
 // ignore_for_file: deprecated_member_use_from_same_package
 
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:dart_i2p/src/switch_platform.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:path/path.dart' as p;
@@ -95,22 +97,36 @@ class I2p {
   /// To ensure full compatibility with
   String binPath;
   Future<int> run() async {
-    if (i2pdConf.pidfile != null) {
-      try {
-        final pid = int.tryParse(File(i2pdConf.pidfile!).readAsStringSync());
-        if (pid == null) print("pid is NaN - $pid");
-        // i hoped to use this one...
-        // if (Process.killPid(pid!, 0)) {}
-
-        final checkProc =
-            await Process.run('kill', ['-s', '0', pid.toString()]);
-        if (checkProc.exitCode == 0) {
-          // it looks like i2pd is already running, we are not going to start it again
-          return -256;
+    switch (getPlatform()) {
+      case OS.windows:
+        final pr = Process.runSync(
+          "tasklist.exe",
+          ['/fo', 'csv'],
+        );
+        if (pr.stdout.toString().contains('i2pd.exe')) {
+          print("i2pd is already running.");
+          return 0;
         }
-      } catch (e) {
-        // fail silently, we don't care that much.
-      }
+      case _:
+        if (i2pdConf.pidfile != null) {
+          try {
+            final pid =
+                int.tryParse(File(i2pdConf.pidfile!).readAsStringSync());
+            if (pid == null) print("pid is NaN - $pid");
+            // i hoped to use this one...
+            // if (Process.killPid(pid!, 0)) {}
+
+            final checkProc =
+                await Process.run('kill', ['-s', '0', pid.toString()]);
+            if (checkProc.exitCode == 0) {
+              // it looks like i2pd is already running, we are not going to start it again
+              return -256;
+            }
+          } catch (e) {
+            // fail silently, we don't care that much.
+          }
+        }
+        break;
     }
     await _i2pdConf.writeAsString(i2pdConf.toString());
     final tunnelsSink = _tunnelsConf.openWrite(mode: FileMode.write);
@@ -172,7 +188,7 @@ class I2p {
     print("domainInfo:${run.stdout}");
     print("domainInfo:${run.exitCode}");
     if (run.exitCode != 0) return null;
-    return run.stdout.toString().split("\n")[0];
+    return run.stdout.toString().replaceAll('\r', '').split("\n")[0];
   }
 }
 
