@@ -7,6 +7,10 @@ import 'package:dio/io.dart';
 import 'package:path/path.dart' as p;
 import 'package:dart_i2p/src/certgen/gen_certs.g.dart' as crts;
 
+/// What version are we running at?
+// ignore: constant_identifier_names
+const DART_I2P_VERSION = "0.0.0";
+
 const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
 Random _rnd = Random.secure();
 
@@ -73,7 +77,8 @@ class I2p {
   /// It should contain at least:
   /// - [x] i2pd
   /// - [x] keyinfo
-  /// And optionally (not used currently, but we may use them in future.)
+  /// And optionally (not used currently, but we or somebody else may use them
+  /// in future.)
   /// - [ ] b33address
   /// - [ ] famtool
   /// - [ ] i2pbase64

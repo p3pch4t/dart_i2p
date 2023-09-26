@@ -4,5 +4,5 @@
 library;
 
 export 'src/dart_i2p_base.dart';
-
+export 'src/binaries.dart';
 // TODO: Export any libraries intended for clients of this package.
