@@ -41,7 +41,9 @@ class I2p {
           };
           return client;
         };
-      _dio = Dio()..httpClientAdapter = adapter;
+      _dio = Dio()
+        ..httpClientAdapter = adapter
+        ..options.responseType = ResponseType.plain;
     }
     storePath = Directory(storePathString)..createSync(recursive: true);
 
