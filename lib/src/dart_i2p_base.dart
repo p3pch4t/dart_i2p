@@ -1,6 +1,5 @@
 // ignore_for_file: deprecated_member_use_from_same_package
 
-import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:dart_i2p/src/switch_platform.dart';

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dart_i2p/src/switch_platform.dart';
 
 enum I2pdBinaries {
