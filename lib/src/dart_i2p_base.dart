@@ -582,12 +582,12 @@ ${loglevel == null ? '# ' : ''}loglevel = $loglevel
 ${logclftime == null ? '# ' : ''}logclftime = $logclftime
 ${daemon == null ? '# ' : ''}daemon = $daemon
 ${family == null ? '# ' : ''}family = $family
-${ifname == null ? '#' : ''}ifname = $ifname
-${ifname4 == null ? '#' : ''}ifname4 = $ifname4
-${ifname6 == null ? '#' : ''}ifname6 = $ifname6
-${address4 == null ? '#' : ''}address4 = $address4
-${address6 == null ? '#' : ''}address6 = $address6
-${host == null ? '#' : ''}host = $host
+${ifname == null ? '# ' : ''}ifname = $ifname
+${ifname4 == null ? '# ' : ''}ifname4 = $ifname4
+${ifname6 == null ? '# ' : ''}ifname6 = $ifname6
+${address4 == null ? '# ' : ''}address4 = $address4
+${address6 == null ? '# ' : ''}address6 = $address6
+${host == null ? '# ' : ''}host = $host
 port = $port
 ipv4 = $ipv4
 ipv6 = $ipv6
@@ -641,7 +641,7 @@ class I2pdNtcp2Conf {
 [ntcp2]
 enabled = $enabled
 published = $published
-${port == null ? '#' : ''}port = $port
+${port == null ? '# ' : ''}port = $port
 ''';
   }
 }
@@ -668,7 +668,7 @@ class I2pdSsu2Conf {
 [ssu2]
 enabled = $enabled
 published = $published
-${port == null ? '#' : ''}port = $port
+${port == null ? '# ' : ''}port = $port
 ''';
   }
 }
@@ -984,7 +984,7 @@ class I2pdPrecomputationConf {
   String toString() {
     return '''
 [precomputation]
-${elgamal == null ? '#' : ''}elgamal = $elgamal
+${elgamal == null ? '# ' : ''}elgamal = $elgamal
 ''';
   }
 }
@@ -1030,7 +1030,7 @@ class I2pdMeshnetsConf {
     return '''
 [meshnets]
 yggdrasil = $yggdrasil
-${yggaddress == null ? '#' : ''}yggaddress = $yggaddress
+${yggaddress == null ? '# ' : ''}yggaddress = $yggaddress
 ''';
   }
 }
@@ -1081,11 +1081,11 @@ class I2pdReseedConf {
 
 [reseed]
 verify = $verify
-${urls.isEmpty ? '#' : ''} urls = ${urls.join(",")}
-${yggurls.isEmpty ? '#' : ''} yggurls = ${yggurls.join(",")}
-${file == null ? '#' : ''}file = $file
-${zipfile == null ? '#' : ''}zipfile = $zipfile
-${proxy == null ? '#' : ''}proxy = $proxy
+${urls.isEmpty ? '# ' : ''} urls = ${urls.join(",")}
+${yggurls.isEmpty ? '# ' : ''} yggurls = ${yggurls.join(",")}
+${file == null ? '# ' : ''}file = $file
+${zipfile == null ? '# ' : ''}zipfile = $zipfile
+${proxy == null ? '# ' : ''}proxy = $proxy
 threshold = $threshold
 ''';
   }
@@ -1114,8 +1114,8 @@ class I2pdAddressbookConf {
   String toString() {
     return '''
 [addressbook]
-${defaulturl.isEmpty ? '#' : ''} defaulturl = $defaulturl
-${subscriptions.isEmpty ? '#' : ''} subscriptions = $subscriptions
+${defaulturl.isEmpty ? '# ' : ''} defaulturl = $defaulturl
+${subscriptions.isEmpty ? '# ' : ''} subscriptions = $subscriptions
 ''';
   }
 }
@@ -1174,8 +1174,8 @@ class I2pdTrustConf {
     return '''
 [trust]
 enabled = true
-${family == null ? '#' : ''}family = $family
-${routers.isEmpty ? '#' : ''}routers = ${routers.join(",")}
+${family == null ? '# ' : ''}family = $family
+${routers.isEmpty ? '# ' : ''}routers = ${routers.join(",")}
 hidden = true
 ''';
   }
@@ -1396,12 +1396,12 @@ type = $type
 host = $host
 port = $port
 inport = $inport
-accesslist = $accesslist
+${accesslist.isEmpty ? '# ' : ''}accesslist = $accesslist
 gzip = $gzip
 signaturetype = ${I2pdTunnel.tunnelSignatureTypeID(signaturetype)}
 cryptotype = $cryptotype
 enableuniquelocal = $enableuniquelocal
-${address == null ? '#' : ''}address = $address
+${address == null ? '# ' : ''}address = $address
 keys = keys/$keys
 ''';
   }
@@ -1471,14 +1471,14 @@ type = $type
 host = $host
 port = $port
 inport = $inport
-accesslist = $accesslist
+${accesslist.isEmpty ? '# ' : ''}accesslist = $accesslist
 gzip = $gzip
 signaturetype = ${I2pdTunnel.tunnelSignatureTypeID(signaturetype)}
 cryptotype = $cryptotype
 enableuniquelocal = $enableuniquelocal
-${address == null ? '#' : ''}address = $address
+${address == null ? '# ' : ''}address = $address
 keys = keys/$keys
-${hostoverride == null ? '#' : ''}hostoverride = $hostoverride
+${hostoverride == null ? '# ' : ''}hostoverride = $hostoverride
 ssl = $ssl
 ''';
   }
@@ -1547,14 +1547,14 @@ type = $type
 host = $host
 port = $port
 inport = $inport
-accesslist = $accesslist
+${accesslist.isEmpty ? '# ' : ''}accesslist = $accesslist
 gzip = $gzip
 signaturetype = ${I2pdTunnel.tunnelSignatureTypeID(signaturetype)}
 cryptotype = $cryptotype
 enableuniquelocal = $enableuniquelocal
-${address == null ? '#' : ''}address = $address
+${address == null ? '# ' : ''}address = $address
 keys = keys/$keys
-${webircpassword == null ? '#' : ''}webircpassword = $webircpassword
+${webircpassword == null ? '# ' : ''}webircpassword = $webircpassword
 ''';
   }
 }
