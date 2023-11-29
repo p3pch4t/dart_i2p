@@ -185,11 +185,12 @@ class I2p {
         )
       ],
     );
+    final di = run.stdout.toString().trim();
     print("domainInfo:${run.stderr}");
-    print("domainInfo:${run.stdout}");
+    print("domainInfo:$di");
     print("domainInfo:${run.exitCode}");
     if (run.exitCode != 0) return null;
-    return run.stdout.toString().replaceAll('\r', '').split("\n")[0];
+    return di;
   }
 }
 
