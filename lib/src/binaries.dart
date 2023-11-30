@@ -6,7 +6,7 @@ enum I2pdBinaries {
   i2pbase64,
   i2pd,
   keygen,
-  keyinfo,
+  keyinfo, // printf "%s.b32.i2p\n" $(head -c 391 /home/i2p/.i2pd/example.dat |sha256sum|xxd -r -p | base32 |sed s/=//g | tr A-Z a-z)
   offlinekeys,
   regaddr,
   regaddr_3ld,
