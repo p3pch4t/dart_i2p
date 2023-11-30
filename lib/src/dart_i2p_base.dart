@@ -42,7 +42,9 @@ class I2p {
         };
       _dio = Dio()
         ..httpClientAdapter = adapter
-        ..options.responseType = ResponseType.plain;
+        ..options.responseType = ResponseType.plain
+        ..options.sendTimeout = const Duration(seconds: 30)
+        ..options.receiveTimeout = const Duration(seconds: 30);
     }
     storePath = Directory(storePathString)..createSync(recursive: true);
 
