@@ -44,7 +44,8 @@ class I2p {
         ..httpClientAdapter = adapter
         ..options.responseType = ResponseType.plain
         ..options.sendTimeout = const Duration(seconds: 30)
-        ..options.receiveTimeout = const Duration(seconds: 30);
+        ..options.receiveTimeout = const Duration(seconds: 30)
+        ..options.receiveDataWhenStatusError = true;
     }
     storePath = Directory(storePathString)..createSync(recursive: true);
 
