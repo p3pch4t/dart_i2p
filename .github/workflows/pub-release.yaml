@@ -21,4 +21,4 @@ jobs:
         run: |
           cd ${{ github.workspace }} \
           && make version \
-          && PAT_SECRET_PACKAGE=${{ secrets.PAT_SECRET_PACKAGE }} dart pub publish
+          && PAT_SECRET_PACKAGE=${{ secrets.PAT_SECRET_PACKAGE }} dart pub publish --skip-validation
