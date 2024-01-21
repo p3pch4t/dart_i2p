@@ -2,7 +2,7 @@ name: dart_i2p
 description: A starting point for Dart libraries or applications.
 version: 1.0.0
 repository: https://git.mrcyjanek.net/p3pch4t/dart_i2p
-publish_to: https://git.mrcyjanek.net/api/packages/mrcyjanek/pub
+publish_to: https://git.mrcyjanek.net/api/packages/p3pch4t/pub
 
 environment:
   sdk: ^3.1.1
