@@ -40,4 +40,4 @@ $DOCKER_PREFIX docker run --platform linux/amd64 -v $OUTDIR:/out -v $BPATH/build
 # $DOCKER_PREFIX docker run --platform linux/amd64 -v $OUTDIR:/out -v $BPATH/postprocess.sh:/bin/build.sh -w /build --rm -it $BUILD_IMAGE bash /bin/build.sh
 
 cd $OUTDIR
-find * -type f | parallel -v '$DOCKER_PREFIX upx --best {}'
+# find * -type f | parallel -v '$DOCKER_PREFIX upx --best {}'
