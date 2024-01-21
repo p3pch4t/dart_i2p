@@ -9,12 +9,11 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
-  dio: ^5.3.2
-  html: ^0.15.4
-  http: ^1.1.0
-  path: ^1.8.3
-  # path: ^1.8.0
+  dio: 5.3.2
+  html: 0.15.4
+  http: 1.1.0
+  path: 1.8.3
 
 dev_dependencies:
-  lints: ^3.0.0
-  test: ^1.21.0
+  lints: 3.0.0
+  test: 1.21.0
