@@ -3,7 +3,7 @@ import 'dart:typed_data';
 import 'package:crypto/crypto.dart';
 import 'package:base32/base32.dart';
 
-void keyinfo(String path) {
+String keyinfo(String path) {
   File file = File(path);
   List<int> content = file.readAsBytesSync();
 
@@ -23,5 +23,5 @@ void keyinfo(String path) {
   base32Hash = base32Hash.toLowerCase();
 
   // Print the result
-  print('$base32Hash.b32.i2p');
+  return '$base32Hash.b32.i2p';
 }

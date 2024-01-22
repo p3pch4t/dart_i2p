@@ -3,6 +3,7 @@
 import 'dart:io';
 import 'dart:math';
 import 'package:dart_i2p/src/switch_platform.dart';
+import 'package:dart_i2p/src/keyinfo.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/io.dart';
 import 'package:path/path.dart' as p;
@@ -178,22 +179,7 @@ class I2p {
   Directory get _i2pdData => Directory(p.join(storePath.path, "i2pddata"));
 
   Future<String?> domainInfo(String keyfilename) async {
-    final run = await Process.run(
-      p.join(binPath, libSoHack ? 'libkeyinfo.so' : "keyinfo"),
-      [
-        p.join(
-          _i2pdData.path,
-          'keys',
-          keyfilename,
-        )
-      ],
-    );
-    final di = run.stdout.toString().trim();
-    print("domainInfo:${run.stderr}");
-    print("domainInfo:$di");
-    print("domainInfo:${run.exitCode}");
-    if (run.exitCode != 0) return null;
-    return di;
+    return keyinfo(keyfilename);
   }
 }
 
