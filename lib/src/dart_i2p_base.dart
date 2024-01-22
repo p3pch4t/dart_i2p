@@ -179,7 +179,11 @@ class I2p {
   Directory get _i2pdData => Directory(p.join(storePath.path, "i2pddata"));
 
   Future<String?> domainInfo(String keyfilename) async {
-    return keyinfo(keyfilename);
+    return keyinfo(p.join(
+      _i2pdData.path,
+      'keys',
+      keyfilename,
+    ));
   }
 }
 
